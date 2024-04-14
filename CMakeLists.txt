@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.16)
 
 project(mt)
 
-add_subdirectory(${PROJECT_SOURCE_DIR}/third_party/cxxopts)
+add_subdirectory(${PROJECT_SOURCE_DIR}/3rdparty/cxxopts)
 
 # add_executable(mt src/main.cpp)
 # add_executable(mt src/worker_example.cpp)
