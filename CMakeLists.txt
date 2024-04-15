@@ -70,13 +70,28 @@ add_subdirectory(${PROJECT_SOURCE_DIR}/3rdparty/cxxopts)
 # )
 add_executable(
   mt 
-  src/grpc_streaming.cpp
+  src/grpc_streaming_server.cpp
+  ${route_guide_proto_srcs}
+  ${route_guide_grpc_srcs}
+)
+
+add_executable(
+  mt_client 
+  src/grpc_streaming_client.cpp
   ${route_guide_proto_srcs}
   ${route_guide_grpc_srcs}
 )
 
 target_link_libraries(
   mt 
+  pthread 
+  cxxopts
+  protobuf::libprotobuf
+  gRPC::grpc++_reflection
+)
+
+target_link_libraries(
+  mt_client
   pthread 
   cxxopts
   protobuf::libprotobuf

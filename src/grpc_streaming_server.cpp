@@ -2,6 +2,8 @@
 #include <iostream>
 #include <route_guide.grpc.pb.h>
 #include <route_guide.pb.h>
+#include <chrono>
+#include <thread>
 
 using namespace std;
 using routeguide::RouteGuide;
@@ -23,10 +25,11 @@ class RouteGuideImpl final : public RouteGuide::Service {
     Status ListFeatures(ServerContext* context, const routeguide::Rectangle* rectangle, ServerWriter<Feature>* writer) override {
       for (int i = 0; i < 10; i++) {
         Feature f;
-        f.set_name("Feature 1");
-        f.mutable_location()->set_latitude(1);
-        f.mutable_location()->set_longitude(1);
+        f.set_name("Feature");
+        f.mutable_location()->set_latitude(i);
+        f.mutable_location()->set_longitude(i);
         writer->Write(f);
+        this_thread::sleep_for(chrono::seconds(1));
       }
       return Status::OK;
     }
