@@ -2,6 +2,14 @@ cmake_minimum_required(VERSION 3.16)
 
 project(mt)
 
+# make sure clang-tidy is installed, apt install -y clang-tidy
+set(CMAKE_CXX_CLANG_TIDY "clang-tidy;-checks=*,-modernize-use-trailing-return-type,-modernize-use-nodiscard,-modernize-use-override,-modernize-use-equals-default,-modernize-use-equals-delete,-modernize-use-nullptr,-modernize-use-bool-literals,-modernize-use-auto,-modernize-pass-by-value,-modernize-raw-string-literal")
+
+
+
+message(STATUS "Using clang-tidy: ${CLANG_TIDY_EXECUTABLE}")
+message(STATUS "Using clang-tidy: ${CLANG_TIDY_COMMAND}")
+
 # Protobuf
 find_package(Protobuf CONFIG REQUIRED)
 message(STATUS "Using protobuf ${Protobuf_VERSION}")
@@ -62,18 +70,19 @@ add_subdirectory(${PROJECT_SOURCE_DIR}/3rdparty/cxxopts)
 # add_executable(mt src/main.cpp)
 # add_executable(mt src/worker_example.cpp)
 # add_executable(mt src/cv_example.cpp)
+# add_executable(mt src/map_ex.cpp)
 # add_executable(mt src/cxxopts_ex.cpp)
 # add_executable(
 #   mt 
 #   src/pbtxt_ex.cpp
 #   ${config_proto_srcs}
 # )
-add_executable(
-  mt 
-  src/grpc_streaming_server.cpp
-  ${route_guide_proto_srcs}
-  ${route_guide_grpc_srcs}
-)
+# add_executable(
+#   mt 
+#   src/grpc_streaming_server.cpp
+#   ${route_guide_proto_srcs}
+#   ${route_guide_grpc_srcs}
+# )
 
 add_executable(
   mt_client 
@@ -81,6 +90,16 @@ add_executable(
   ${route_guide_proto_srcs}
   ${route_guide_grpc_srcs}
 )
+
+add_executable(
+  mt
+  src/grpc_streaming_cb_server.cpp
+  ${route_guide_proto_srcs}
+  ${route_guide_grpc_srcs}
+)
+
+# clang-tidy
+# set_target_properties(mt PROPERTIES CMAKE_CXX_CLANG_TIDY "${CLANG_TIDY_COMMAND}")
 
 target_link_libraries(
   mt 
